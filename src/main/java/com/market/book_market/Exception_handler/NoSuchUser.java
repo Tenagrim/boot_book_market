@@ -1,4 +1,4 @@
-package com.market.book_market.User.Exception_handler;
+package com.market.book_market.Exception_handler;
 
 public class NoSuchUser extends RuntimeException{
     public NoSuchUser(String message) {

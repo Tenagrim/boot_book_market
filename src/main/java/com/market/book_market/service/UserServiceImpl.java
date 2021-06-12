@@ -1,7 +1,7 @@
-package com.market.book_market.User.service;
+package com.market.book_market.service;
 
-import com.market.book_market.User.dao.UserDAO;
-import com.market.book_market.User.entity.User;
+import com.market.book_market.dao.UserDAO;
+import com.market.book_market.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

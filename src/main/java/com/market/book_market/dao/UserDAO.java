@@ -1,6 +1,6 @@
-package com.market.book_market.User.dao;
+package com.market.book_market.dao;
 
-import com.market.book_market.User.entity.User;
+import com.market.book_market.entity.User;
 
 import java.util.List;
 
