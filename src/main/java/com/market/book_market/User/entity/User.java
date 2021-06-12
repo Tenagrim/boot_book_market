@@ -1,4 +1,4 @@
-package com.market.book_market.entity;
+package com.market.book_market.User.entity;
 
 import javax.persistence.*;
 
