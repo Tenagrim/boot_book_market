@@ -6,9 +6,7 @@ import com.market.book_market.entity.Book;
 import com.market.book_market.service.BookService;
 import com.market.book_market.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -31,5 +29,12 @@ public class RESTcontroller {
     @GetMapping("/books")
     public List<Book> showAllBook() {
         return bookService.getAllBooks();
+    }
+
+    @PostMapping("/books")
+    public Book addNewBook(@RequestBody Book book)
+    {
+        bookService.saveBook(book);
+        return book;
     }
 }

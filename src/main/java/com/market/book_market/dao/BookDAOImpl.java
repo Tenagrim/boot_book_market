@@ -22,4 +22,21 @@ public class BookDAOImpl implements BookDAO{
         List<Book> allBooks = query.getResultList();
         return allBooks;
     }
+
+    @Override
+    public void saveBook(Book book) {
+        entityManager.merge(book);
+    }
+
+    @Override
+    public Book getBook(int id) {
+        return entityManager.find(Book.class, id);
+    }
+
+    @Override
+    public void deleteBook(int id) {
+        Query query = entityManager.createQuery("delete from Book where id =: bookId");
+        query.setParameter("bookId", id);
+        query.executeUpdate();
+    }
 }
