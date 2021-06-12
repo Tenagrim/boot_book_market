@@ -14,4 +14,11 @@ public class Author {
     @Column(name = "name_author")
     private String name;
 
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
 }

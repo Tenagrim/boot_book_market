@@ -1,5 +1,7 @@
 package com.market.book_market.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 
 @Entity
@@ -20,7 +22,8 @@ public class Book {
     @Column(name="amount",columnDefinition = "int default 0")
     private int amount;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST})
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @JoinColumn(name="author_id")
     private Author author;
 
