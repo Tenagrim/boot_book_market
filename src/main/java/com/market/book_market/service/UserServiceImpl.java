@@ -1,40 +1,44 @@
 package com.market.book_market.service;
 
-import com.market.book_market.dao.UserDAO;
+import com.market.book_market.dao.UserRepository;
 import com.market.book_market.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService{
 
     @Autowired
-    private UserDAO userDAO;
+    private UserRepository userRepository;
 
     @Override
-    @Transactional
-    public List<User> getAllUsers() {
-        return userDAO.getAllUsers();
-    }
+    public List<User> getAllUsers() { return userRepository.findAll(); }
 
     @Override
-    @Transactional
     public User getOneUser(int id) {
-        return userDAO.getOneUser(id);
+        User user = null;
+        Optional<User> data = userRepository.findById(id);
+        if (data.isPresent()){
+            user = data.get();
+        }
+        return user;
     }
 
     @Override
-    @Transactional
     public void saveUser(User user) {
-        userDAO.saveUser(user);
+        userRepository.save(user);
     }
 
     @Override
-    @Transactional
     public void deleteUser(int id) {
-        userDAO.deleteUser(id);
+        userRepository.deleteById(id);
+    }
+
+    @Override
+    public List<User> findAllByBalance(double balance) {
+        return userRepository.findAllByBalance(balance);
     }
 }
