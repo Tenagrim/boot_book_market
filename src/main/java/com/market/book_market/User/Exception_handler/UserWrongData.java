@@ -1,4 +1,4 @@
-package com.market.book_market.Exception_handler;
+package com.market.book_market.User.Exception_handler;
 
 public class UserWrongData {
     private String info;

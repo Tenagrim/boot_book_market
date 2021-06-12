@@ -1,6 +1,6 @@
-package com.market.book_market.dao;
+package com.market.book_market.User.dao;
 
-import com.market.book_market.entity.User;
+import com.market.book_market.User.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

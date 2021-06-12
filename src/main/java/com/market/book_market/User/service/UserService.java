@@ -1,6 +1,6 @@
-package com.market.book_market.service;
+package com.market.book_market.User.service;
 
-import com.market.book_market.entity.User;
+import com.market.book_market.User.entity.User;
 
 import java.util.List;
 

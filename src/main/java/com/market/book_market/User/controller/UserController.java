@@ -1,10 +1,10 @@
-package com.market.book_market.controller;
+package com.market.book_market.User.controller;
 
 
-import com.market.book_market.Exception_handler.NoSuchUser;
-import com.market.book_market.Exception_handler.UserWrongData;
-import com.market.book_market.entity.User;
-import com.market.book_market.service.UserService;
+import com.market.book_market.User.Exception_handler.NoSuchUser;
+import com.market.book_market.User.Exception_handler.UserWrongData;
+import com.market.book_market.User.entity.User;
+import com.market.book_market.User.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
-public class RESTcontroller {
+public class UserController {
 
     @Autowired
     private UserService userService;
