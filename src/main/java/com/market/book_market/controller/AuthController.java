@@ -56,6 +56,8 @@ public class AuthController {
     @PostMapping("/signin")
     public AuthResponse auth(@RequestBody AuthorizationRequest request) {
         User userEntity = userService.findByUsernameAndPassword(request.getUsername(), request.getPassword());
+        if(userEntity == null)
+            return new AuthResponse("Wrong data");
         String token = jwtProvider.generateToken(userEntity.getUsername());
         return new AuthResponse(token);
     }
