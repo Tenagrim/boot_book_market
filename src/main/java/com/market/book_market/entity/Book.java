@@ -1,5 +1,7 @@
 package com.market.book_market.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 
 @Entity
@@ -20,11 +22,12 @@ public class Book {
     @Column(name="amount",columnDefinition = "int default 0")
     private int amount;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST})
+    @ManyToOne()
+//    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @JoinColumn(name="author_id")
     private Author author;
 
-    @ManyToOne(cascade = {CascadeType.ALL})
+    @ManyToOne()
     @JoinColumn(name="genre_id")
     private Genre genre;
 
@@ -50,6 +53,14 @@ public class Book {
 
     public Genre getGenre() {
         return genre;
+    }
+
+    public void setGenre(Genre genre) {
+        this.genre = genre;
+    }
+
+    public void setAuthor(Author author) {
+        this.author = author;
     }
 
     @Override

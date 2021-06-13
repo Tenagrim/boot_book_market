@@ -9,4 +9,6 @@ public interface UserService {
     public User getOneUser(int id);
     public void saveUser(User user);
     public void deleteUser(int id);
+
+    List<User> findAllByBalance(double balance);
 }

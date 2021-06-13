@@ -3,6 +3,7 @@ package com.market.book_market.controller;
 
 
 import com.market.book_market.entity.Book;
+import com.market.book_market.entity.User;
 import com.market.book_market.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -13,12 +14,8 @@ import java.util.List;
 @RequestMapping("/api")
 public class RESTcontroller {
 
-
-
     @Autowired
     private BookService bookService;
-
-
 
     @GetMapping("/books")
     public List<Book> showAllBook() {
@@ -28,7 +25,19 @@ public class RESTcontroller {
     @PostMapping("/books")
     public Book addNewBook(@RequestBody Book book)
     {
+        Book resp = bookService.saveBook(book);
+        return resp;
+    }
+
+    @PutMapping("/books")
+    public Book updateUser(@RequestBody Book book) {
         bookService.saveBook(book);
         return book;
     }
+
+    @DeleteMapping("/books/{id}")
+    public void deleteUser(@PathVariable int id){
+        bookService.deleteBook(id);
+    }
+
 }
