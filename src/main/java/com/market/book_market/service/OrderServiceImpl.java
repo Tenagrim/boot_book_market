@@ -2,6 +2,7 @@ package com.market.book_market.service;
 
 import com.market.book_market.dao.OrderRepository;
 import com.market.book_market.dao.UserRepository;
+import com.market.book_market.entity.Book;
 import com.market.book_market.entity.Order;
 import com.market.book_market.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order saveOrder(Order order) {
         User user = order.getUser();
+        List<Book> bookList = order.getBookList();
 
         if (user != null && user.getUser_id() == 0){
             if (user.getUsername() == null)
@@ -46,6 +48,12 @@ public class OrderServiceImpl implements OrderService {
                 order.setUser(user);
             else
                 userRepository.save(user);
+        }
+
+        for (Book book : bookList) {
+            if(book.getId() == 0) {
+               return null;
+            }
         }
 
         orderRepository.save(order);
