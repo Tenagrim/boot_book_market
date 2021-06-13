@@ -11,4 +11,6 @@ public interface UserService {
     public void deleteUser(int id);
 
     List<User> findAllByBalance(double balance);
+    User findByUsername(String username);
+    User findByUsernameAndPassword(String username, String password);
 }
