@@ -42,7 +42,7 @@ public class UserController {
                     @Content(mediaType = "application/json",
                     schema = @Schema(implementation = User.class))
             }),
-            @ApiResponse(responseCode = "400", description = "None user with this ID", content = {
+            @ApiResponse(responseCode = "404", description = "None user with this ID", content = {
                     @Content(mediaType = "application/json")
             })
     })
@@ -85,8 +85,7 @@ public class UserController {
     @Operation(summary = "Delete User By Id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Delete New User", content = {
-                    @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = User.class))
+                    @Content(mediaType = "text")
             })
     })
     @DeleteMapping("/users/{id}")
