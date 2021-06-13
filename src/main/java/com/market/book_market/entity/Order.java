@@ -1,6 +1,8 @@
 package com.market.book_market.entity;
 
 import javax.persistence.*;
+import java.util.LinkedList;
+import java.util.List;
 
 @Entity
 @Table(name = "orders")
@@ -20,6 +22,9 @@ public class Order {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<Book> bookList;
+
     public Order() {
     }
 
@@ -29,6 +34,14 @@ public class Order {
 
     public String getDate() {
         return date;
+    }
+
+    public List<Book> getBookList() {
+        return bookList;
+    }
+
+    public void setBookList(List<Book> bookList) {
+        this.bookList = bookList;
     }
 
     public void setDate(String date) {
@@ -62,6 +75,7 @@ public class Order {
                 ", description='" + description + '\'' +
                 ", date='" + date + '\'' +
                 ", user=" + user +
+                ", bookList=" + bookList +
                 '}';
     }
 }

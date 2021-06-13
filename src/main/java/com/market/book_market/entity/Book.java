@@ -3,6 +3,10 @@ package com.market.book_market.entity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "books")
@@ -30,6 +34,10 @@ public class Book {
     @ManyToOne()
     @JoinColumn(name="genre_id")
     private Genre genre;
+
+    @Transient
+    @ManyToMany(mappedBy = "bookList")
+    private List<Order> orderList;
 
     public int getId() {
         return id;
@@ -59,6 +67,14 @@ public class Book {
         this.genre = genre;
     }
 
+    public List<Order> getOrderList() {
+        return orderList;
+    }
+
+    public void setOrderList(List<Order> orderList) {
+        this.orderList = orderList;
+    }
+
     public void setAuthor(Author author) {
         this.author = author;
     }
@@ -72,7 +88,7 @@ public class Book {
                 ", amount=" + amount +
                 ", author=" + author +
                 ", genre=" + genre +
+                ", orderList=" + orderList +
                 '}';
     }
-
 }
