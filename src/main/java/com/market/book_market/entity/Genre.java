@@ -14,4 +14,11 @@ public class Genre {
     @Column(name = "name_genre")
     private String name;
 
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
 }
