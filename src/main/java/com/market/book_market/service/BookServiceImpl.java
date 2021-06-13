@@ -33,10 +33,9 @@ public class BookServiceImpl implements BookService{
     public Book saveBook(Book book) {
         Author author = book.getAuthor();
         Genre  genre = book.getGenre();
-        System.out.println(book.getAuthor().toString());
 
         // Find or save author
-        if(author.getId() == 0) {
+        if(author != null && author.getId() == 0) {
             if (author.getName() == null)
                 return null;
             Author find = authorRepository.findByName(author.getName());
@@ -47,7 +46,7 @@ public class BookServiceImpl implements BookService{
         }
 
         // find or save genre
-        if(genre.getId() == 0) {
+        if(genre != null && genre.getId() == 0) {
             if (genre.getName() == null)
                 return null;
             Genre find = genreRepository.findByName(genre.getName());
