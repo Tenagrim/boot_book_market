@@ -1,32 +1,34 @@
 package com.market.book_market.controller;
 
-import com.market.book_market.entity.Book;
-import com.market.book_market.entity.User;
+import com.market.book_market.models.entity.Book;
+import com.market.book_market.models.requests.BookRq;
+import com.market.book_market.models.responses.BookRs;
 import com.market.book_market.service.BookService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/books")
+@RequiredArgsConstructor
 public class BooksController {
 
-    @Autowired
-    private BookService bookService;
+    private final BookService bookService;
 
     @Operation(summary = "Get all books")
     @ApiResponse(responseCode = "200", description = "Return books List", content = {
             @Content(mediaType = "application/json",
-                    schema = @Schema(implementation = Book.class))
+                    schema = @Schema(implementation = BookRs.class))
     })
-    @GetMapping("/books")
-    public List<Book> showAllBook() {
+    @GetMapping
+    public List<BookRs> showAllBooks() {
         return bookService.getAllBooks();
     }
 
@@ -34,43 +36,42 @@ public class BooksController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Return book by ID", content = {
                     @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Book.class))
+                            schema = @Schema(implementation = BookRs.class))
             }),
             @ApiResponse(responseCode = "404", description = "None book with this ID", content = {
                     @Content(mediaType = "application/json")
             })
     })
-    @GetMapping("/books/{id}")
-    public Book getOneBook(@PathVariable int id) {
-        Book book = bookService.getOneBook(id);
-        return book;
+    @GetMapping("/{id}")
+    public BookRs getOneBook(@PathVariable int id) {
+         return bookService.getOneBook(id);
     }
 
     @Operation(summary = "Create new book")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Create new book", content = {
                     @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Book.class))
+                            schema = @Schema(implementation = BookRq.class))
             })
     })
-    @PostMapping("/books")
-    public Book addNewBook(@RequestBody Book book)
+    @PostMapping
+    public ResponseEntity addNewBook(@RequestBody BookRq book)
     {
-        Book resp = bookService.saveBook(book);
-        return resp;
+        bookService.saveBook(book);
+        return ResponseEntity.ok().build();
     }
 
     @Operation(summary = "Update existing book")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Updates existing book", content = {
                     @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Book.class))
+                            schema = @Schema(implementation = BookRq.class))
             })
     })
-    @PutMapping("/books")
-    public Book updateUser(@RequestBody Book book) {
+    @PutMapping
+    public ResponseEntity updateBook(@RequestBody BookRq book) {
         bookService.saveBook(book);
-        return book;
+        return ResponseEntity.ok().build();
     }
 
     @Operation(summary = "Delete book by id")
@@ -78,8 +79,8 @@ public class BooksController {
             @ApiResponse(responseCode = "200", description = "Delete existing book", content = {
             })
     })
-    @DeleteMapping("/books/{id}")
-    public void deleteUser(@PathVariable int id){
+    @DeleteMapping("/{id}")
+    public void deleteBook(@PathVariable int id){
         bookService.deleteBook(id);
     }
 

@@ -1,7 +1,8 @@
 package com.market.book_market.configuration.jwt;
 
-import com.market.book_market.entity.User;
+import com.market.book_market.models.entity.User;
 import com.market.book_market.service.CustomUserDetailsService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,15 +19,13 @@ import java.io.IOException;
 import static org.springframework.util.StringUtils.hasText;
 
 @Component
+@RequiredArgsConstructor
 public class JwtFilter extends GenericFilterBean {
 
     public static final String AUTHORIZATION = "Authorization";
 
-    @Autowired
-    private JwtProvider jwtProvider;
-
-    @Autowired
-    private CustomUserDetailsService customUserDetailsService;
+    private final JwtProvider jwtProvider;
+    private final CustomUserDetailsService customUserDetailsService;
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
@@ -39,15 +38,14 @@ public class JwtFilter extends GenericFilterBean {
             SecurityContextHolder.getContext().setAuthentication(auth);
         }
         filterChain.doFilter(servletRequest, servletResponse);
-
     }
 
     private String getTokenFromRequest(HttpServletRequest request) {
         String bearer = request.getHeader(AUTHORIZATION);
         if (hasText(bearer) && bearer.startsWith("Bearer ")) {
             return bearer.substring(7);
-        }
-        return null;
+        } else
+            return bearer;
     }
 
 }

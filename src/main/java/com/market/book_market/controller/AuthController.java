@@ -1,33 +1,33 @@
 package com.market.book_market.controller;
 
 import com.market.book_market.configuration.jwt.JwtProvider;
-import com.market.book_market.entity.Book;
-import com.market.book_market.entity.User;
-import com.market.book_market.requests.AuthResponse;
-import com.market.book_market.requests.AuthorizationRequest;
-import com.market.book_market.requests.RegistrationRequest;
+import com.market.book_market.mappers.UserMapper;
+import com.market.book_market.models.entity.User;
+import com.market.book_market.models.requests.AuthResponse;
+import com.market.book_market.models.requests.AuthorizationRequest;
+import com.market.book_market.models.requests.RegistrationRequest;
 import com.market.book_market.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
 @RestController
+@RequiredArgsConstructor
 public class AuthController {
-    @Autowired
-    private UserService userService;
 
-    @Autowired
-    private JwtProvider jwtProvider;
+    private final UserService userService;
+    private final JwtProvider jwtProvider;
+    private final UserMapper userMapper;
 
     @Operation(summary = "Register")
     @ApiResponses(value = {
@@ -36,11 +36,7 @@ public class AuthController {
     @PostMapping("/signup")
     public ResponseEntity sginUp(@Valid @RequestBody RegistrationRequest registrationRequest)
     {
-        User user = new User();
-        user.setPassword(registrationRequest.getPassword());
-        user.setUsername(registrationRequest.getUsername());
-        user.setEmail(registrationRequest.getEmail());
-        userService.saveUser(user);
+        userService.saveUser(userMapper.toUserRq(registrationRequest));
         return ResponseEntity.ok().build();
     }
 

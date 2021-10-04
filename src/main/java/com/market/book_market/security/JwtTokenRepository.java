@@ -16,7 +16,6 @@ public class JwtTokenRepository implements CsrfTokenRepository {
 
     @Override
     public void saveToken(CsrfToken csrfToken, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
-
     }
 
     @Override

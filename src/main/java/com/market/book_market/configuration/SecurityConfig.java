@@ -1,6 +1,8 @@
 package com.market.book_market.configuration;
 
 import com.market.book_market.configuration.jwt.JwtFilter;
+import com.market.book_market.models.dto.RoleDto;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,14 +16,18 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     public static final String [] WHITELIST = {
+            "/v3/api-docs/swagger-config",
             "/v2/api-docs",
+            "/v3/api-docs",
             "/configuration/ui",
             "/swagger-resources/**",
             "/configuration/security",
             "/swagger-ui.html",
+            "/swagger-ui/*",
             "/webjars/**",
             "/signup",
             "/signin"
@@ -36,14 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/books/*"
     };
 
-    @Autowired
-    private JwtFilter jwtFilter;
-
-    @Bean
-    public PasswordEncoder passwordEncoder()
-    {
-        return new BCryptPasswordEncoder();
-    }
+    private final JwtFilter jwtFilter;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -54,8 +53,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers(WHITELIST).permitAll()
-                .antMatchers(ADMIN_LIST).hasRole("ADMIN")
-                .antMatchers(USER_LIST).hasRole("USER")
+                .antMatchers(ADMIN_LIST).hasRole(RoleDto.ADMIN.name())
+                .antMatchers(USER_LIST).hasAnyRole(RoleDto.USER.name(), RoleDto.ADMIN.name())
+                .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
     }

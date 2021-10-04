@@ -1,33 +1,34 @@
 package com.market.book_market.controller;
 
-import com.market.book_market.entity.Order;
+import com.market.book_market.exceptions.NotFoundException;
+import com.market.book_market.models.entity.Order;
+import com.market.book_market.models.requests.OrderRq;
+import com.market.book_market.models.responses.OrderRs;
 import com.market.book_market.service.OrderService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/orders")
+@RequiredArgsConstructor
 public class OrderController {
 
-    @Autowired
-    private OrderService orderService;
+    private final OrderService orderService;
 
-    @GetMapping("/orders")
-    public List<Order> showAllOrders() { return orderService.getAllOrders(); }
+    @GetMapping
+    public List<OrderRs> showAllOrders() { return orderService.getAllOrders(); }
 
-    @GetMapping("/orders/{id}")
-    public Order getOneOrder(@PathVariable int id){
-        Order order = orderService.getOrder(id);
-        return order;
+    @GetMapping("/{id}")
+    public OrderRs getOneOrder(@PathVariable int id){
+        return orderService.getOrder(id);
     }
 
-    @PostMapping("/orders")
-    public Order addNewOrder(@RequestBody Order order)
-    {
-        System.out.println(order.toString());
-        Order resp = orderService.saveOrder(order);
-        return resp;
+    @PostMapping
+    public ResponseEntity addNewOrder(@RequestBody OrderRq order) throws NotFoundException {
+         orderService.saveOrder(order);
+        return ResponseEntity.ok().build();
     }
 }
