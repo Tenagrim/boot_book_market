@@ -16,6 +16,26 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    public static final String [] WHITELIST = {
+            "/v2/api-docs",
+            "/configuration/ui",
+            "/swagger-resources/**",
+            "/configuration/security",
+            "/swagger-ui.html",
+            "/webjars/**",
+            "/signup",
+            "/signin"
+    };
+
+    public static final String [] ADMIN_LIST = {
+            "/users*",
+            "/users/*",
+    };
+
+    public static final String [] USER_LIST = {
+            "/books/*"
+    };
+
     @Autowired
     private JwtFilter jwtFilter;
 
@@ -33,11 +53,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/api/users/*").hasRole("ADMIN")
-                .antMatchers("/api/users*").hasRole("ADMIN")
-                .antMatchers("/api/books/*").hasRole("USER")
-                .antMatchers("/api/signin", "/api/signup", "/api/docs.html", "/api/swagger-ui/*","/api-docs/*","/api-docs").permitAll()
-                .anyRequest().authenticated()
+                .antMatchers(WHITELIST).permitAll()
+                .antMatchers(ADMIN_LIST).hasRole("ADMIN")
+                .antMatchers(USER_LIST).hasRole("USER")
                 .and()
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
     }

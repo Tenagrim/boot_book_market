@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/api")
 public class AuthController {
     @Autowired
     private UserService userService;
@@ -31,19 +31,17 @@ public class AuthController {
 
     @Operation(summary = "Register")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Registration", content = {
-                    @Content(mediaType = "text")
-            })
+            @ApiResponse(responseCode = "200", description = "Registration")
     })
     @PostMapping("/signup")
-    public String sginUp(@RequestBody RegistrationRequest registrationRequest)
+    public ResponseEntity sginUp(@Valid @RequestBody RegistrationRequest registrationRequest)
     {
         User user = new User();
         user.setPassword(registrationRequest.getPassword());
         user.setUsername(registrationRequest.getUsername());
         user.setEmail(registrationRequest.getEmail());
         userService.saveUser(user);
-        return "OK";
+        return ResponseEntity.ok().build();
     }
 
     @Operation(summary = "Get auth token")
